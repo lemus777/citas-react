@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react"
+import Error from "./Error"
 
-const Formulario = () => {
+const Formulario = ({ pacientes, setPacientes }) => {
   const [nombre, setNombre] = useState('')
   const [propietario, setPropietario] = useState('')
   const [email, setEmail] = useState('')
   const [fecha, setFecha] = useState('')
   const [sintomas, setSintomas] = useState('')
+
+  const [error, setError] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -13,9 +16,32 @@ const Formulario = () => {
     // Validación del formulario
     if( [ nombre, propietario, email, fecha, sintomas ].includes('') ) { // esto comprueba si alguno de los estados es un string vacío
       console.log('Hay al menos un campo vacío')
-    } else {
-      console.log('Todos llenos')
+      setError(true)
+      return // si entra en este condicional pasa error a true y el return hace que deje de ejecutarse el resto de la función handleSubmit
     }
+
+    setError(false) // en el caso de que no falte nada, el error pasa a false, por si antes nos faltó algún campo y se puso en true
+
+    // generaremos un objeto de paciente
+    const objetoPaciente = {
+      nombre, // como los valores van a ser iguales a la key no hay que declararlos
+      propietario,
+      email,
+      fecha,
+      sintomas
+    }
+    /* No debemos modificar el pacientes original, así que lo que hacemos es crear un arreglo nuevo
+      Para ello en setPacientes usamos una copia del arreglo original creándolo del siguiente modo -> [...pacientes] 
+      A ese arreglo copiado, que es uno nuevo, le agregamos el objetoPaciente -> [... pacientes, objetoPaciente]
+      Y este nuevo arreglo lo establecemos como pacientes gracias a la función setPacientes del estado */
+    setPacientes([...pacientes, objetoPaciente])
+
+    // Reiniciar el formulario
+    setNombre('')
+    setPropietario('')
+    setEmail('')
+    setFecha('')
+    setSintomas('')
   }
 
   return (
@@ -24,6 +50,7 @@ const Formulario = () => {
       <p className="text-lg mt-5 text-center mb-10">Añade Pacientes y <span className="text-indigo-600 font-bold">Adminístralos</span></p>
 
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg py-10 px-5 mb-10 mx-5">
+        { error && <Error><p>Todos los campos son obligatorios</p></Error>} {/* para pasar un prop como children lo hacemos con esta sintaxis */}
         <div className="mb-5">
           <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">Nombre Mascota</label>
           <input
