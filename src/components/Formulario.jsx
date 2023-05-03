@@ -10,6 +10,12 @@ const Formulario = ({ pacientes, setPacientes }) => {
 
   const [error, setError] = useState(false)
 
+  const generarId = () => {
+    const random = Math.random().toString(36).substring(2)
+    const fecha = Date.now().toString(36)
+    return random + fecha
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -28,7 +34,8 @@ const Formulario = ({ pacientes, setPacientes }) => {
       propietario,
       email,
       fecha,
-      sintomas
+      sintomas,
+      id: generarId()
     }
     /* No debemos modificar el pacientes original, así que lo que hacemos es crear un arreglo nuevo
       Para ello en setPacientes usamos una copia del arreglo original creándolo del siguiente modo -> [...pacientes] 
@@ -106,7 +113,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
         </div>
         <input
           type="submit"
-          className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+          className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors rounded-lg"
           value='Agregar Paciente'
         />
       </form>
