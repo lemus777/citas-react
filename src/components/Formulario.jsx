@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Error from "./Error"
 
-const Formulario = ({ pacientes, setPacientes, paciente }) => {
+const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
   const [nombre, setNombre] = useState('')
   const [propietario, setPropietario] = useState('')
   const [email, setEmail] = useState('')
@@ -13,7 +13,13 @@ const Formulario = ({ pacientes, setPacientes, paciente }) => {
   /* useEffect evita renders innecesarios, renderizando sólo cuando cambia la dependencia que le pasamos en el array final 
   Si no pasamos nada en el array, sólo se renderizará una vez al cargar */
   useEffect(() => {
-    console.log(paciente)
+    if ( Object.keys(paciente).length > 0 ) {
+      setNombre(paciente.nombre)
+      setPropietario(paciente.propietario)
+      setEmail(paciente.email)
+      setFecha(paciente.fecha)
+      setSintomas(paciente.sintomas)
+    } 
   }, [paciente])
 
   
@@ -36,7 +42,7 @@ const Formulario = ({ pacientes, setPacientes, paciente }) => {
 
     setError(false) // en el caso de que no falte nada, el error pasa a false, por si antes nos faltó algún campo y se puso en true
 
-    // generaremos un objeto de paciente
+    // generaremos un objeto de paciente con todos los datos que tenemos
     const objetoPaciente = {
       nombre, // como los valores van a ser iguales a la key no hay que declararlos
       propietario,
@@ -45,12 +51,26 @@ const Formulario = ({ pacientes, setPacientes, paciente }) => {
       sintomas,
       id: generarId()
     }
-    /* No debemos modificar el pacientes original, así que lo que hacemos es crear un arreglo nuevo
+
+    if (paciente.id) {
+      // Editando el registro. En el caso de que tengamos paciente con id es que lo hemos agregado con el botón editar
+      objetoPaciente.id = paciente.id // tomamos la id del paciente que estamos editando
+      // iteramos por cada pacienteState en pacientes, si la id coincide con el que editamos sustituimos por el que hemos editado, si no lo dejamos tal cual
+      const pacientesActualizados = pacientes.map( pacienteState => pacienteState.id === paciente.id ? objetoPaciente : pacienteState )
+      // sustituimos los pacientes con el nuevo array de pacientes actualizados
+      setPacientes(pacientesActualizados)
+      // Una vez editado eliminamos el paciente sustituyéndolo por un objeto vacío
+      setPaciente({})
+    } else {
+      // Nuevo registro
+      objetoPaciente.id = generarId()
+      /* No debemos modificar el pacientes original, así que lo que hacemos es crear un arreglo nuevo
       Para ello en setPacientes usamos una copia del arreglo original creándolo del siguiente modo -> [...pacientes] 
       A ese arreglo copiado, que es uno nuevo, le agregamos el objetoPaciente -> [... pacientes, objetoPaciente]
       Y este nuevo arreglo lo establecemos como pacientes gracias a la función setPacientes del estado */
-    setPacientes([...pacientes, objetoPaciente])
-
+      setPacientes([...pacientes, objetoPaciente])
+    }
+    
     // Reiniciar el formulario
     setNombre('')
     setPropietario('')
@@ -122,7 +142,8 @@ const Formulario = ({ pacientes, setPacientes, paciente }) => {
         <input
           type="submit"
           className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors rounded-lg"
-          value='Agregar Paciente'
+          value={ paciente.id ? 'Editar paciente' : 'Agregar paciente'} /* si paciente tiene id quiere decir que lo hemos traído con el botón editar
+          entonces en ese caso mostramos editar paciente. Si no tiene id quiere decir que el objeto paciente aún no ha sido creado */
         />
       </form>
     </div>
