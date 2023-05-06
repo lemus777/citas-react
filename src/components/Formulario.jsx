@@ -94,7 +94,7 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
             placeholder="Nombre de la mascota"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={nombre}
-            onChange={ e => setNombre(e.target.value) }
+            onChange={ (e) => setNombre(e.target.value) }
           />
         </div>
         <div className="mb-5">
@@ -105,7 +105,7 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
             placeholder="Nombre del propietario"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={propietario}
-            onChange={ e => setPropietario(e.target.value) }
+            onChange={ (e) => setPropietario(e.target.value) }
           />
         </div>
         <div className="mb-5">
@@ -116,7 +116,7 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
             placeholder="Email Contacto Propietario"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={email}
-            onChange={ e => setEmail(e.target.value) }
+            onChange={ (e) => setEmail(e.target.value) }
           />
         </div>
         <div className="mb-5">
@@ -126,7 +126,7 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
             type='date'
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={fecha}
-            onChange={ e => setFecha(e.target.value) }
+            onChange={ (e) => setFecha(e.target.value) }
           />
         </div>
         <div className="mb-5">
@@ -136,7 +136,7 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
             placeholder="Describe los síntomas"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={sintomas}
-            onChange={ e => setSintomas(e.target.value) }
+            onChange={ (e) => setSintomas(e.target.value) }
           />
         </div>
         <input
