@@ -2,7 +2,7 @@ const Paciente = ({paciente, setPaciente, eliminarPaciente}) => {
   const { nombre, propietario, email, fecha, sintomas, id } = paciente
 
   const handleEliminar = () => {
-    const respuesta = confirm('Deseas eliminar este paciente?')
+    const respuesta = confirm('¿Deseas eliminar este paciente?')
     if(respuesta) {
       eliminarPaciente(id)
     }
