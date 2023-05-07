@@ -17,7 +17,6 @@ function App() {
       pacientesLS?.length > 0 && setPacientes(pacientesLS);
       // sustituimos nuestro array inicial de estado con lo almacenado. Esto pasa antes del siguiente useEffect,
       // por lo que incluso si recargamos cuando sustituya los pacientes ya no es el array vacío sino lo almacenado
-      // setPacientes(pacientesLS)
     }
     obtenerLS()
   }, []) // no le pasamos dependencia porque queremos que se ejecute una sola vez
